@@ -5,26 +5,32 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>MIN-Tube-Pro — Loading</title>
 
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
 <style>
   :root{
-    --brand:#1fb6a4;        
-    --brand-soft:#4fd6c0;   
+    --brand:#1fb6a4;
     --bg-top:#0b0b0b;
     --bg-bottom:#141010;
     --muted:#b9bfc3;
     --bar-bg:#1b1616;
     --pixel:#2a1f1f;
     --radius:8px;
+
+    /* breakpoints */
+    --bp-sm: 640px;
+    --bp-md: 880px;
   }
 
-  /* Reset & base */
-  *{box-sizing:border-box}
-  html,body{height:100%;margin:0;font-family:'Press Start 2P',system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,var(--bg-top),var(--bg-bottom));-webkit-font-smoothing:antialiased;color:#ffffff}
-  .wrap{height:100%;display:flex;align-items:center;justify-content:center;padding:28px}
+  /* Reset (軽量) */
+  *,*::before,*::after{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:'Press Start 2P',system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,var(--bg-top),var(--bg-bottom));-webkit-font-smoothing:antialiased;color:#fff;-webkit-text-size-adjust:100%}
+  img{max-width:100%;height:auto;display:block}
+  a{color:inherit;text-decoration:none}
 
-  /* Card (clean, corporate + Minecraft block feel) */
+  /* Layout */
+  .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px}
   .card{
     width:880px;max-width:96%;display:flex;gap:20px;align-items:center;padding:22px;border-radius:12px;
     background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
@@ -33,7 +39,7 @@
     position:relative;
   }
 
-  /* Block logo (Minecraft-like, but refined) */
+  /* Logo: SVG preferred for crispness */
   .logo{
     width:180px;height:180px;flex-shrink:0;border:8px solid #1b0b0b;background:
       linear-gradient(180deg,#2b0b0b,#1a0b0b);
@@ -50,8 +56,8 @@
 
   /* Meta */
   .meta{flex:1;min-width:0}
-  .title{font-size:20px;color:#ffffff;margin:0 0 6px 0}
-  .subtitle{font-size:11px;color:#ffffff;margin:0 0 14px 0;opacity:0.95}
+  .title{font-size:clamp(16px,1.6vw,20px);color:#ffffff;margin:0 0 6px 0}
+  .subtitle{font-size:clamp(10px,1.1vw,12px);color:#ffffff;margin:0 0 14px 0;opacity:0.95}
 
   /* Progress area */
   .progress-wrap{background:rgba(255,255,255,0.02);padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.18)}
@@ -59,16 +65,15 @@
   .bar-track{flex:1;height:100%;background:var(--bar-bg);border-radius:8px;overflow:hidden;position:relative;box-shadow:inset 0 -8px 18px rgba(0,0,0,0.5)}
   .bar-fill{
     position:absolute;left:0;top:0;bottom:0;width:0%;
-    
     background: linear-gradient(90deg, rgba(255,255,255,0.06), var(--brand));
     box-shadow: 0 0 18px rgba(31,182,164,0.18);
-    display:flex;align-items:center;justify-content:center;color:#ffffff;font-size:12px;transition:width 0.05s linear;
+    display:flex;align-items:center;justify-content:center;color:#ffffff;font-size:12px;transition:width 120ms linear;
   }
   .percent{width:72px;text-align:right;font-size:13px;color:#ffffff}
 
-  /* Pixel dot row (Minecraft-like dots) */
+  /* Pixel dot row */
   .dot-row{display:flex;gap:6px;margin-top:12px}
-  .dot-pixel{width:10px;height:10px;background:var(--pixel);box-shadow:0 3px 0 rgba(0,0,0,0.6);border-radius:2px}
+  .dot-pixel{width:10px;height:10px;background:var(--pixel);box-shadow:0 3px 0 rgba(0,0,0,0.6);border-radius:2px;transition:box-shadow 120ms,opacity 120ms}
 
   /* Message */
   .message{margin-top:12px;font-size:12px;color:#ffffff;display:flex;align-items:center;gap:10px}
@@ -76,8 +81,14 @@
 
   @keyframes blink{0%{opacity:1}50%{opacity:0.25}100%{opacity:1}}
 
-  /* Pixel border */
+  /* Pixel frame */
   .pixel-frame{position:absolute;inset:0;pointer-events:none;border:8px solid rgba(0,0,0,0.6);border-radius:12px;box-shadow:0 0 0 4px rgba(0,0,0,0.08) inset}
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce){
+    .bar-fill{transition:none}
+    .message .dot{animation:none}
+  }
 
   /* Responsive */
   @media (max-width:640px){
@@ -89,13 +100,19 @@
     .dot-row{gap:4px}
     .dot-pixel{width:8px;height:8px}
   }
+
+  /* High contrast fallback for low-contrast displays */
+  @media (forced-colors: active){
+    .bar-fill{background:Highlight;color:HighlightText}
+  }
 </style>
 </head>
 <body>
   <div class="wrap" role="status" aria-live="polite" aria-label="MIN-Tube-Pro ローディング">
     <div class="card">
       <div class="logo" aria-hidden="true">
-        <div class="logo-inner">MIN<br>TUBE<br>PRO</div>
+        <!-- SVGロゴを推奨。代替テキストはmeta/aria-labelで提供 -->
+        <div class="logo-inner" aria-hidden="true">MIN<br>TUBE<br>PRO</div>
       </div>
 
       <div class="meta">
@@ -116,7 +133,6 @@
           </div>
 
           <div class="dot-row" aria-hidden="true" id="dotRow" style="margin-top:10px">
-            <!-- Minecraft-like pixel dots -->
             <div class="dot-pixel" style="background:#2b0b0b"></div>
             <div class="dot-pixel" style="background:#3b0f0f"></div>
             <div class="dot-pixel" style="background:var(--brand)"></div>
@@ -132,7 +148,7 @@
 
 <script>
   (function(){
-    const DURATION = 5000; // 5秒
+    const DURATION = 5000;
     const start = performance.now();
     const barFill = document.getElementById('barFill');
     const percentText = document.getElementById('percentText');
@@ -140,7 +156,6 @@
     const progressRole = document.querySelector('[role="progressbar"]');
     const dotRow = document.getElementById('dotRow');
 
-  
     const messages = [
       "サーバーに接続中です。",
       "APIを読み込んでいます。",
@@ -148,8 +163,6 @@
       "オンラインのインスタンスを取得中。",
       "ボットではないことを確認中です。"
     ];
-
-    
     const thresholds = [0.0, 0.18, 0.38, 0.65, 0.85];
 
     function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
@@ -170,23 +183,19 @@
       percentText.textContent = pct + '%';
       progressRole.setAttribute('aria-valuenow', pct);
 
-      
       const msg = getMessageFor(t);
       msgText.textContent = msg;
 
-      
       animateDots(eased);
 
       if (t < 1) {
         requestAnimationFrame(tick);
       } else {
-        
         msgText.textContent = "準備完了";
         percentText.textContent = "100%";
         barFill.style.boxShadow = '0 0 28px rgba(31,182,164,0.22), inset 0 -8px 18px rgba(0,0,0,0.45)';
-      
         const logo = document.querySelector('.logo');
-        if(logo){
+        if(logo && !window.matchMedia('(prefers-reduced-motion: reduce)').matches){
           logo.animate([
             { transform: 'translateY(0)' },
             { transform: 'translateY(-6px)' },
@@ -196,7 +205,6 @@
       }
     }
 
-  
     function animateDots(progress){
       const pixels = dotRow.children;
       for(let i=0;i<pixels.length;i++){
