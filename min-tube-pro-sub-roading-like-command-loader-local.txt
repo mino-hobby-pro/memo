@@ -7,11 +7,10 @@
   <style>
     :root {
       --bg: #02030a;
-      --neon-cyan: #27f3ff;
-      --neon-magenta: #ff3bff;
-      --neon-green: #4dff7a;
-      --neon-yellow: #ffe45e;
-      --neon-red: #ff3366;
+      --neon-cyan: #00f6ff;
+      --neon-magenta: #ff00ff;
+      --neon-purple: #a400ff;
+      --neon-yellow: #ffe600;
       --text-main: #f5f7ff;
     }
 
@@ -24,7 +23,7 @@
     html, body {
       width: 100%;
       height: 100%;
-      background: radial-gradient(circle at top, #05081a 0, #02030a 45%, #000 100%);
+      background: radial-gradient(circle at top, #10152b 0, #02030a 55%, #000000 100%);
       color: var(--text-main);
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       overflow: hidden;
@@ -39,480 +38,519 @@
 
     .scene {
       position: relative;
-      width: 100vw;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .bg-glow {
-      position: absolute;
-      inset: -20%;
-      background:
-        radial-gradient(circle at 20% 10%, rgba(39,243,255,0.18) 0, transparent 55%),
-        radial-gradient(circle at 80% 20%, rgba(255,59,255,0.18) 0, transparent 55%),
-        radial-gradient(circle at 10% 80%, rgba(77,255,122,0.16) 0, transparent 55%),
-        radial-gradient(circle at 90% 85%, rgba(255,228,94,0.16) 0, transparent 55%);
-      filter: blur(4px);
-      opacity: 0.9;
-      pointer-events: none;
-      mix-blend-mode: screen;
-    }
-
-    .logo-wrapper {
-      position: relative;
-      width: min(520px, 80vw);
-      height: min(260px, 40vh);
+      width: 260px;
+      height: 260px;
       transform-style: preserve-3d;
-      animation: logoFloat 6s ease-in-out infinite alternate;
+      filter: drop-shadow(0 0 25px rgba(0, 255, 255, 0.45));
+      animation: sceneFloat 6s ease-in-out infinite alternate;
     }
 
-    @keyframes logoFloat {
+    @keyframes sceneFloat {
       0% {
-        transform: rotateX(18deg) rotateY(-22deg) translateY(0);
-      }
-      50% {
-        transform: rotateX(10deg) rotateY(18deg) translateY(-6px);
+        transform: translateY(0px) rotateX(18deg) rotateY(-22deg);
       }
       100% {
-        transform: rotateX(16deg) rotateY(-10deg) translateY(4px);
+        transform: translateY(-18px) rotateX(26deg) rotateY(18deg);
       }
     }
 
-    .panel {
+    .cube {
       position: absolute;
       inset: 0;
-      border-radius: 26px;
-      background: linear-gradient(135deg, #050814 0%, #050b1f 40%, #02030a 100%);
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,0.04),
-        0 26px 80px rgba(0,0,0,0.9),
-        0 0 40px rgba(39,243,255,0.25),
-        0 0 80px rgba(255,59,255,0.18);
-      overflow: hidden;
+      margin: auto;
+      width: 220px;
+      height: 220px;
       transform-style: preserve-3d;
+      animation: cubeSpin 3.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
     }
 
-    .panel::before {
+    @keyframes cubeSpin {
+      0% {
+        transform: rotateX(-40deg) rotateY(-60deg) scale(0.2);
+      }
+      40% {
+        transform: rotateX(20deg) rotateY(40deg) scale(1.05);
+      }
+      70% {
+        transform: rotateX(35deg) rotateY(120deg) scale(1);
+      }
+      100% {
+        transform: rotateX(25deg) rotateY(200deg) scale(1);
+      }
+    }
+
+    .cube-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.06);
+      box-shadow:
+        0 0 25px rgba(0, 246, 255, 0.35),
+        0 0 55px rgba(255, 0, 255, 0.25),
+        inset 0 0 35px rgba(0, 0, 0, 0.9);
+      background:
+        radial-gradient(circle at 20% 0%, rgba(0, 246, 255, 0.35), transparent 55%),
+        radial-gradient(circle at 80% 100%, rgba(255, 0, 255, 0.35), transparent 55%),
+        linear-gradient(135deg, rgba(10, 14, 40, 0.95), rgba(2, 3, 10, 0.98));
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .cube-face::before,
+    .cube-face::after {
+      content: "";
+      position: absolute;
+      inset: 10%;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow:
+        0 0 18px rgba(0, 246, 255, 0.35),
+        0 0 28px rgba(255, 0, 255, 0.25);
+      opacity: 0.9;
+    }
+
+    .cube-face::after {
+      inset: 22%;
+      border-radius: 10px;
+      border-color: rgba(255, 255, 255, 0.12);
+      box-shadow:
+        0 0 18px rgba(255, 230, 0, 0.35),
+        0 0 30px rgba(0, 246, 255, 0.25);
+      opacity: 0.7;
+    }
+
+    .cube-face.front  { transform: translateZ(110px); }
+    .cube-face.back   { transform: rotateY(180deg) translateZ(110px); }
+    .cube-face.right  { transform: rotateY(90deg) translateZ(110px); }
+    .cube-face.left   { transform: rotateY(-90deg) translateZ(110px); }
+    .cube-face.top    { transform: rotateX(90deg) translateZ(110px); }
+    .cube-face.bottom { transform: rotateX(-90deg) translateZ(110px); }
+
+    .cube-grid {
+      position: absolute;
+      inset: 16%;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(4, 1fr);
+      gap: 6px;
+      opacity: 0.9;
+    }
+
+    .cube-cell {
+      position: relative;
+      border-radius: 6px;
+      background: radial-gradient(circle at 30% 0%, rgba(0, 246, 255, 0.7), rgba(0, 0, 0, 0.9));
+      box-shadow:
+        0 0 10px rgba(0, 246, 255, 0.6),
+        0 0 18px rgba(255, 0, 255, 0.45);
+      overflow: hidden;
+    }
+
+    .cube-cell::before {
       content: "";
       position: absolute;
       inset: -40%;
       background:
-        conic-gradient(from 120deg,
-          rgba(39,243,255,0.0),
-          rgba(39,243,255,0.7),
-          rgba(255,59,255,0.0),
-          rgba(255,228,94,0.7),
-          rgba(77,255,122,0.0)
+        conic-gradient(
+          from 0deg,
+          rgba(0, 246, 255, 0.0),
+          rgba(0, 246, 255, 0.9),
+          rgba(255, 0, 255, 0.9),
+          rgba(255, 230, 0, 0.9),
+          rgba(0, 246, 255, 0.0)
         );
-      opacity: 0.22;
       mix-blend-mode: screen;
-      animation: panelGlow 10s linear infinite;
+      animation: cellSweep 3.5s linear infinite;
     }
 
-    @keyframes panelGlow {
-      0% { transform: rotate(0deg) translate3d(0,0,0); }
-      100% { transform: rotate(360deg) translate3d(0,0,0); }
+    @keyframes cellSweep {
+      0%   { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
 
-    .boot-logo {
+    .cube-cell:nth-child(odd)::before {
+      animation-duration: 4.2s;
+    }
+    .cube-cell:nth-child(3n)::before {
+      animation-duration: 3.1s;
+    }
+
+    .cube-core {
       position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 26px;
-      transform: translateZ(40px);
-      animation: bootIntro 5s ease-out forwards;
+      inset: 32%;
+      border-radius: 18px;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.9), transparent 60%),
+        radial-gradient(circle at 0% 100%, rgba(0, 246, 255, 0.9), transparent 60%),
+        radial-gradient(circle at 100% 100%, rgba(255, 0, 255, 0.9), transparent 60%);
+      box-shadow:
+        0 0 40px rgba(255, 255, 255, 0.9),
+        0 0 80px rgba(0, 246, 255, 0.9),
+        0 0 120px rgba(255, 0, 255, 0.9);
+      opacity: 0;
+      animation: corePulse 3.5s ease-out forwards;
     }
 
-    @keyframes bootIntro {
+    @keyframes corePulse {
       0% {
         opacity: 0;
-        transform: translateZ(120px) scale(0.9);
-        filter: blur(6px);
-      }
-      12% {
-        opacity: 1;
-        transform: translateZ(40px) scale(1.02);
-        filter: blur(0);
+        transform: scale(0.4);
       }
       40% {
-        transform: translateZ(60px) scale(1);
+        opacity: 1;
+        transform: scale(1.05);
       }
       70% {
-        transform: translateZ(40px) scale(1);
+        opacity: 0.95;
+        transform: scale(0.95);
+      }
+      100% {
+        opacity: 0.0;
+        transform: scale(0.6);
+      }
+    }
+
+    .floor {
+      position: absolute;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle, rgba(0, 246, 255, 0.4), transparent 55%),
+        radial-gradient(circle, rgba(255, 0, 255, 0.3), transparent 70%);
+      opacity: 0.55;
+      transform: rotateX(90deg) translateZ(-180px);
+      filter: blur(2px);
+    }
+
+    .floor-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 246, 255, 0.25) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 246, 255, 0.25) 1px, transparent 1px);
+      background-size: 26px 26px;
+      mask-image: radial-gradient(circle, black 0, transparent 70%);
+      opacity: 0.7;
+      animation: floorGlow 4.5s ease-in-out infinite alternate;
+    }
+
+    @keyframes floorGlow {
+      0% {
+        opacity: 0.4;
+        transform: scale(0.9);
+      }
+      100% {
+        opacity: 0.9;
+        transform: scale(1.05);
+      }
+    }
+
+    .logo {
+      position: absolute;
+      inset: auto 0 40px 0;
+      margin: auto;
+      width: 100%;
+      text-align: center;
+      letter-spacing: 0.18em;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      color: rgba(200, 210, 255, 0.7);
+      text-shadow:
+        0 0 10px rgba(0, 246, 255, 0.6),
+        0 0 18px rgba(255, 0, 255, 0.4);
+      opacity: 0;
+      animation: logoFade 3.5s ease-out forwards;
+    }
+
+    @keyframes logoFade {
+      0% {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      40% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      80% {
+        opacity: 0.9;
       }
       100% {
         opacity: 0;
-        transform: translateZ(0px) scale(0.96);
-        filter: blur(4px);
+        transform: translateY(6px);
       }
     }
 
-    .boot-title {
-      font-size: clamp(2.6rem, 4vw, 3.4rem);
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: #e9f7ff;
-      text-align: center;
-      position: relative;
-      padding: 0.2em 0.6em;
-      text-shadow:
-        0 0 12px rgba(39,243,255,0.9),
-        0 0 26px rgba(255,59,255,0.8),
-        0 0 50px rgba(0,0,0,1);
-    }
-
-    .boot-title span.min {
-      color: var(--neon-cyan);
-    }
-    .boot-title span.tube {
-      color: var(--neon-magenta);
-    }
-    .boot-title span.pro {
-      color: var(--neon-green);
-    }
-
-    .boot-title::before,
-    .boot-title::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      width: 120%;
-      height: 2px;
+    .logo span {
+      display: inline-block;
+      padding: 0.25em 0.7em;
       border-radius: 999px;
-      background: linear-gradient(90deg,
-        transparent,
-        rgba(39,243,255,0.9),
-        rgba(255,59,255,0.9),
-        rgba(77,255,122,0.9),
-        transparent
-      );
-      transform: translateX(-50%);
+      border: 1px solid rgba(0, 246, 255, 0.6);
+      background: radial-gradient(circle at 0 0, rgba(0, 246, 255, 0.4), transparent 55%);
       box-shadow:
-        0 0 12px rgba(39,243,255,0.9),
-        0 0 18px rgba(255,59,255,0.9);
+        0 0 16px rgba(0, 246, 255, 0.7),
+        0 0 26px rgba(255, 0, 255, 0.5);
     }
 
-    .boot-title::before {
-      top: -0.4em;
-    }
-    .boot-title::after {
-      bottom: -0.4em;
+    .logo span strong {
+      font-weight: 700;
+      color: #ffffff;
     }
 
-    .boot-sub {
-      font-size: 0.9rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(230,240,255,0.8);
-      text-align: center;
-      opacity: 0.9;
-    }
-
-    .boot-progress {
-      position: relative;
-      width: 60%;
-      max-width: 320px;
-      height: 4px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.06);
-      overflow: hidden;
-      box-shadow:
-        0 0 12px rgba(39,243,255,0.5),
-        0 0 18px rgba(255,59,255,0.4);
-    }
-
-    .boot-progress-bar {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg,
-        rgba(39,243,255,0.0),
-        rgba(39,243,255,1),
-        rgba(255,59,255,1),
-        rgba(77,255,122,1),
-        rgba(255,228,94,1),
-        rgba(255,51,102,1),
-        rgba(255,51,102,0.0)
-      );
-      transform-origin: left center;
-      animation: bootProgress 5s cubic-bezier(0.16, 0.9, 0.25, 1) forwards;
-    }
-
-    @keyframes bootProgress {
-      0% { transform: scaleX(0); }
-      20% { transform: scaleX(0.25); }
-      45% { transform: scaleX(0.55); }
-      70% { transform: scaleX(0.82); }
-      100% { transform: scaleX(1); }
-    }
-
-    .boot-hint {
-      margin-top: 6px;
-      font-size: 0.7rem;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-      color: rgba(200,215,255,0.6);
-    }
-
-    .dive-screen {
+    .dive-message {
       position: absolute;
       inset: 0;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 24px;
-      transform: translateZ(50px);
+      flex-direction: column;
       opacity: 0;
       pointer-events: none;
-    }
-
-    .dive-screen.active {
-      animation: diveIn 1.4s cubic-bezier(0.16, 0.9, 0.25, 1) forwards;
-      pointer-events: auto;
-    }
-
-    @keyframes diveIn {
-      0% {
-        opacity: 0;
-        transform: translateZ(0px) translateY(18px) scale(0.96);
-        filter: blur(6px);
-      }
-      60% {
-        opacity: 1;
-        transform: translateZ(60px) translateY(0) scale(1.02);
-        filter: blur(0);
-      }
-      100% {
-        opacity: 1;
-        transform: translateZ(50px) translateY(0) scale(1);
-      }
-    }
-
-    .dive-label {
-      font-size: 0.9rem;
-      letter-spacing: 0.28em;
-      text-transform: uppercase;
-      color: rgba(210,225,255,0.7);
+      text-align: center;
+      color: var(--text-main);
+      text-shadow:
+        0 0 18px rgba(0, 246, 255, 0.9),
+        0 0 32px rgba(255, 0, 255, 0.8);
     }
 
     .dive-title {
       font-size: clamp(2.4rem, 4vw, 3.2rem);
-      text-transform: uppercase;
       letter-spacing: 0.18em;
-      text-align: center;
+      text-transform: uppercase;
+      margin-bottom: 0.6rem;
+      background: linear-gradient(120deg, #00f6ff, #ffe600, #ff00ff, #00f6ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
       position: relative;
-      padding: 0.4em 0.8em;
-      color: #fdfdff;
-      text-shadow:
-        0 0 14px rgba(39,243,255,1),
-        0 0 26px rgba(255,59,255,1),
-        0 0 40px rgba(77,255,122,0.9),
-        0 0 80px rgba(0,0,0,1);
-    }
-
-    .dive-title span.dive {
-      color: var(--neon-cyan);
-    }
-    .dive-title span.to {
-      color: var(--neon-yellow);
-    }
-    .dive-title span.min {
-      color: var(--neon-cyan);
-    }
-    .dive-title span.tube {
-      color: var(--neon-magenta);
-    }
-    .dive-title span.pro {
-      color: var(--neon-green);
-    }
-
-    .dive-title::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.12);
-      box-shadow:
-        0 0 18px rgba(39,243,255,0.9),
-        0 0 26px rgba(255,59,255,0.9),
-        0 0 40px rgba(77,255,122,0.9);
-      opacity: 0.9;
     }
 
     .dive-title::after {
       content: "";
       position: absolute;
-      inset: 18%;
+      inset: -8px -18px;
       border-radius: 999px;
-      border: 1px dashed rgba(255,255,255,0.18);
-      opacity: 0.7;
-      filter: blur(0.4px);
+      border: 1px solid rgba(0, 246, 255, 0.7);
+      box-shadow:
+        0 0 20px rgba(0, 246, 255, 0.9),
+        0 0 40px rgba(255, 0, 255, 0.9),
+        0 0 70px rgba(255, 230, 0, 0.9);
+      opacity: 0.9;
+      filter: blur(0.3px);
     }
 
-    .dive-pulse-ring {
+    .dive-sub {
+      font-size: 0.9rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(210, 220, 255, 0.85);
+      margin-top: 0.4rem;
+    }
+
+    .dive-glow {
       position: absolute;
-      width: 220%;
-      height: 220%;
+      width: 420px;
+      height: 420px;
       border-radius: 50%;
-      border: 2px solid rgba(39,243,255,0.0);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      animation: divePulse 3.2s ease-out infinite;
-      pointer-events: none;
+      background:
+        radial-gradient(circle, rgba(0, 246, 255, 0.55), transparent 60%),
+        radial-gradient(circle, rgba(255, 0, 255, 0.45), transparent 70%);
+      opacity: 0.55;
+      filter: blur(4px);
+      z-index: -1;
     }
 
-    @keyframes divePulse {
+    .dive-message.show {
+      animation: diveIn 1.5s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+    }
+
+    @keyframes diveIn {
       0% {
-        transform: translate(-50%, -50%) scale(0.4);
-        border-color: rgba(39,243,255,0.9);
-        opacity: 0.9;
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
       }
-      60% {
-        border-color: rgba(255,59,255,0.4);
-        opacity: 0.4;
+      40% {
+        opacity: 1;
+        transform: scale(1.02) translateY(0);
       }
       100% {
-        transform: translate(-50%, -50%) scale(1.1);
-        border-color: rgba(39,243,255,0.0);
-        opacity: 0;
+        opacity: 1;
+        transform: scale(1) translateY(0);
       }
     }
 
-    .dive-cta {
-      margin-top: 10px;
-      padding: 0.7em 1.8em;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.18);
-      background: radial-gradient(circle at top, rgba(39,243,255,0.3), rgba(2,3,10,0.9));
-      color: #fdfdff;
-      font-size: 0.9rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6em;
-      cursor: pointer;
-      box-shadow:
-        0 0 16px rgba(39,243,255,0.8),
-        0 0 26px rgba(255,59,255,0.7);
-      position: relative;
-      overflow: hidden;
+    .dive-message.hide {
+      animation: diveOut 0.6s ease-in forwards;
     }
 
-    .dive-cta::before {
-      content: "";
+    @keyframes diveOut {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.05) translateY(-10px);
+      }
+    }
+
+    .main-ui {
       position: absolute;
       inset: 0;
-      background: linear-gradient(120deg,
-        rgba(255,255,255,0.0) 0%,
-        rgba(255,255,255,0.5) 40%,
-        rgba(255,255,255,0.0) 100%
-      );
-      transform: translateX(-120%);
-      animation: ctaShine 3.4s ease-in-out infinite;
-    }
-
-    @keyframes ctaShine {
-      0% { transform: translateX(-120%); }
-      40% { transform: translateX(120%); }
-      100% { transform: translateX(120%); }
-    }
-
-    .dive-cta-icon {
-      width: 1.1em;
-      height: 1.1em;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.7);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.7rem;
-      box-shadow:
-        0 0 10px rgba(39,243,255,0.9),
-        0 0 18px rgba(255,59,255,0.9);
+      opacity: 0;
+      pointer-events: none;
+      color: var(--text-main);
     }
 
-    .dive-meta {
-      font-size: 0.7rem;
-      letter-spacing: 0.16em;
+    .main-ui.show {
+      animation: uiFadeIn 0.7s ease-out forwards;
+    }
+
+    @keyframes uiFadeIn {
+      0% {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .main-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .main-logo-top {
+      font-size: 0.8rem;
+      letter-spacing: 0.28em;
       text-transform: uppercase;
-      color: rgba(190,205,240,0.7);
+      color: rgba(180, 195, 255, 0.8);
     }
 
-    @media (max-width: 600px) {
-      .logo-wrapper {
-        height: min(220px, 42vh);
+    .main-logo-mid {
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      background: linear-gradient(120deg, #00f6ff, #ffe600, #ff00ff, #00f6ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow:
+        0 0 18px rgba(0, 246, 255, 0.9),
+        0 0 32px rgba(255, 0, 255, 0.8);
+    }
+
+    .main-logo-bottom {
+      font-size: 0.8rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(160, 180, 240, 0.9);
+    }
+
+    @media (max-width: 480px) {
+      .scene {
+        width: 220px;
+        height: 220px;
       }
-      .boot-sub {
-        font-size: 0.8rem;
+      .cube {
+        width: 190px;
+        height: 190px;
       }
-      .boot-progress {
-        width: 70%;
+      .floor {
+        width: 420px;
+        height: 420px;
       }
-      .dive-label {
-        font-size: 0.8rem;
-      }
-      .dive-meta {
-        font-size: 0.65rem;
+      .dive-title::after {
+        inset: -6px -14px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="scene">
-    <div class="bg-glow"></div>
-
-    <div class="logo-wrapper">
-      <div class="panel">
-        <div class="boot-logo" id="bootLogo">
-          <div class="boot-title">
-            <span class="min">MIN</span>-<span class="tube">Tube</span>-<span class="pro">Pro</span>
-          </div>
-          <div class="boot-sub">Ultra Neon Streaming Interface</div>
-          <div class="boot-progress">
-            <div class="boot-progress-bar"></div>
-          </div>
-          <div class="boot-hint">Initializing immersive experience...</div>
+  <div class="scene" id="scene">
+    <div class="cube" id="cube">
+      <div class="cube-face front">
+        <div class="cube-grid">
+          <!-- 4x4 = 16 cells -->
+          <div class="cube-cell"></div><div class="cube-cell"></div><div class="cube-cell"></div><div class="cube-cell"></div>
+          <div class="cube-cell"></div><div class="cube-cell"></div><div class="cube-cell"></div><div class="cube-cell"></div>
+          <div class="cube-cell"></div><div class="cube-cell"></div><div class="cube-cell"></div><div class="cube-cell"></div>
+          <div class="cube-cell"></div><div class="cube-cell"></div><div class="cube-cell"></div><div class="cube-cell"></div>
         </div>
-
-        <div class="dive-screen" id="diveScreen">
-          <div class="dive-label">Welcome</div>
-          <div class="dive-title">
-            <span class="dive">Dive</span> <span class="to">to</span>
-            <span class="min">MIN</span>-<span class="tube">Tube</span>-<span class="pro">Pro</span>
-            <div class="dive-pulse-ring"></div>
-          </div>
-          <button class="dive-cta" onclick="onDiveClick()">
-            <span>Enter the Neon Space</span>
-            <span class="dive-cta-icon">▶</span>
-          </button>
-          <div class="dive-meta">Perfectly tuned for your next deep watch</div>
-        </div>
+        <div class="cube-core"></div>
       </div>
+      <div class="cube-face back"></div>
+      <div class="cube-face right"></div>
+      <div class="cube-face left"></div>
+      <div class="cube-face top"></div>
+      <div class="cube-face bottom"></div>
+    </div>
+
+    <div class="floor">
+      <div class="floor-grid"></div>
+    </div>
+
+    <div class="logo">
+      <span><strong>MIN</strong>-Tube-Pro</span>
+    </div>
+  </div>
+
+  <div class="dive-message" id="diveMessage">
+    <div class="dive-glow"></div>
+    <div class="dive-title">Dive to MIN-Tube-Pro</div>
+    <div class="dive-sub">The powerful yt-get engine</div>
+  </div>
+
+  <div class="main-ui" id="mainUI">
+    <div class="main-logo">
+      <div class="main-logo-top">Welcome to</div>
+      <div class="main-logo-mid">MIN-Tube-Pro</div>
+      <div class="main-logo-bottom">Streaming interface</div>
     </div>
   </div>
 
   <script>
-    window.addEventListener("load", () => {
-      const boot = document.getElementById("bootLogo");
-      const dive = document.getElementById("diveScreen");
+    (function () {
+      const INTRO_DURATION = 3500; 
+      const DIVE_DURATION = 1500;  
 
-      setTimeout(() => {
-        if (boot) boot.style.display = "none";
-        if (dive) dive.classList.add("active");
-      }, 3000); 
-    });
+      const scene = document.getElementById("scene");
+      const cube = document.getElementById("cube");
+      const diveMessage = document.getElementById("diveMessage");
+      const mainUI = document.getElementById("mainUI");
 
-    function onDiveClick() {
-      console.log("Dive to MIN-Tube-Pro!");
-    }
+      function showDiveMessage() {
+        diveMessage.classList.add("show");
+      }
+
+      function hideIntroAndShowUI() {
+        diveMessage.classList.remove("show");
+        diveMessage.classList.add("hide");
+
+        scene.style.transition = "opacity 0.7s ease-in, transform 0.7s ease-in";
+        scene.style.opacity = "0";
+        scene.style.transform = "scale(0.96) translateY(-10px)";
+
+        setTimeout(() => {
+          mainUI.classList.add("show");
+        }, 250);
+      }
+
+      setTimeout(showDiveMessage, INTRO_DURATION);
+      setTimeout(hideIntroAndShowUI, INTRO_DURATION + DIVE_DURATION);
+
+      window.addEventListener("resize", () => {
+      });
+    })();
   </script>
 </body>
 </html>
