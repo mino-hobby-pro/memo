@@ -81,7 +81,6 @@
       }
     }
 
-    /* 3Dパネル（Hulu風の起動画面ベース） */
     .panel {
       position: absolute;
       inset: 0;
@@ -472,7 +471,6 @@
 
     <div class="logo-wrapper">
       <div class="panel">
-        <!-- 起動画面 -->
         <div class="boot-logo" id="bootLogo">
           <div class="boot-title">
             <span class="min">MIN</span>-<span class="tube">Tube</span>-<span class="pro">Pro</span>
@@ -484,7 +482,6 @@
           <div class="boot-hint">Initializing immersive experience...</div>
         </div>
 
-        <!-- Dive画面 -->
         <div class="dive-screen" id="diveScreen">
           <div class="dive-label">Welcome</div>
           <div class="dive-title">
@@ -510,7 +507,7 @@
       setTimeout(() => {
         if (boot) boot.style.display = "none";
         if (dive) dive.classList.add("active");
-      }, 5000); 
+      }, 3000); 
     });
 
     function onDiveClick() {
